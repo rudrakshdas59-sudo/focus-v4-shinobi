@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Focus V4 — Shinobi Study Village, an offline study-planning dashboard." />
+  <title>Focus V4 — Shinobi Study Village</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span></span></div>
+        <div>
+          <strong>FOCUS V4</strong>
+          <small>Shinobi Study Village</small>
+        </div>
+      </div>
+
+      <div class="profile-card">
+        <div class="profile-avatar" id="profileAvatar">S</div>
+        <div class="profile-copy"><strong id="profileName">Shinobi</strong><small>Local profile</small></div>
+        <button class="mini-button" id="logoutButton" aria-label="Log out">↪</button>
+      </div>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <button class="nav-link active" data-view="dashboard"><span>◈</span> Mission Board</button>
+        <button class="nav-link" data-view="calendar"><span>◫</span> Training Calendar</button>
+        <button class="nav-link" data-view="strategy"><span>✦</span> Study Strategy</button>
+        <button class="nav-link" data-view="logic"><span>◇</span> Logic Training</button>
+        <button class="nav-link" data-view="sensei"><span>◉</span> AI Sensei</button>
+        <button class="nav-link" data-view="game"><span>⚔</span> Shinobi Reflex</button>
+      </nav>
+
+      <div class="sidebar-card">
+        <div class="seal">卍</div>
+        <div>
+          <strong>Quiet progress.</strong>
+          <p>Train with intention. Return tomorrow.</p>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <span class="status-dot"></span>
+        Offline mode · Local only
+      </div>
+      <button class="spotify-side" id="spotifyButton" type="button" aria-label="Open Spotify study player">
+        <span class="spotify-icon">♫</span><span>Study audio</span><span>▶</span>
+      </button>
+    </aside>
+
+    <div class="mobile-topbar">
+      <button class="icon-button" id="menuToggle" aria-label="Open navigation">☰</button>
+      <div class="mobile-brand">FOCUS V4 <span>• SHINOBI VILLAGE</span></div>
+      <div class="mobile-top-actions">
+        <button class="icon-button" id="mobileTimer" aria-label="Open study timer">◷</button>
+        <button class="icon-button" id="mobileAdd" aria-label="Add mission">＋</button>
+      </div>
+    </div>
+
+    <main class="main-content">
+      <section class="view active" id="dashboardView">
+        <header class="page-header hero-header">
+          <div>
+            <p class="eyebrow" id="todayLabel">TODAY</p>
+            <h1><span id="greeting">Good evening</span>, <span id="greetingName" class="user-greeting-name">shinobi</span>.</h1>
+            <p class="muted">Your village is quiet. Your next mission is clear.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="audio-button" id="heroSpotifyButton" type="button" aria-label="Open Spotify study player" title="Play study audio">
+              <span class="audio-glyph">♫</span><span>Study audio</span>
+            </button>
+            <button class="timer-button" id="openTimer" type="button" aria-label="Open study timer" title="Study timer">
+              <span class="timer-glyph">◷</span><span>Timer</span>
+            </button>
+            <button class="primary-button" id="openTaskModal"><span>＋</span> Add task</button>
+          </div>
+        </header>
+
+        <div class="village-scene" aria-hidden="true">
+          <div class="sun"></div>
+          <div class="mountain mountain-back"></div>
+          <div class="mountain mountain-front"></div>
+          <div class="roof roof-a"></div>
+          <div class="roof roof-b"></div>
+          <div class="roof roof-c"></div>
+          <div class="scene-line"></div>
+          <img class="character character-left" src="assets/naruto-smile.jpg" alt="" />
+          <img class="character character-right" src="assets/naruto-thumbs-up.jpg" alt="" />
+          <span class="character-glow glow-left"></span><span class="character-glow glow-right"></span>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span class="stat-icon">✓</span>
+            <div><small>Completed missions</small><strong id="completedCount">0</strong></div>
+            <span class="stat-trend" id="completedTrend">Today</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-icon">○</span>
+            <div><small>Remaining missions</small><strong id="remainingCount">0</strong></div>
+            <span class="stat-trend">In queue</span>
+          </article>
+          <article class="stat-card progress-card">
+            <span class="stat-icon">◔</span>
+            <div><small>Completion rate</small><strong id="completionRate">0%</strong></div>
+            <div class="mini-progress"><span id="completionBar"></span></div>
+          </article>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="panel mission-panel">
+            <div class="panel-heading">
+              <div><p class="eyebrow">MISSION BOARD</p><h2>Today’s missions</h2></div>
+              <button class="text-button" data-view-target="calendar">View calendar →</button>
+            </div>
+            <div id="todayMissions" class="mission-list"></div>
+          </section>
+
+          <aside class="panel focus-card">
+            <div class="focus-symbol">忍</div>
+            <p class="eyebrow">DAILY CODE</p>
+            <h2>One focused hour beats three distracted ones.</h2>
+            <p class="muted">Choose one mission. Remove one distraction. Finish the first block before deciding what comes next.</p>
+            <button class="secondary-button" data-view-target="strategy">Build a study route →</button>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="calendarView">
+        <header class="page-header">
+          <div><p class="eyebrow">TRAINING CALENDAR</p><h1>Mission calendar</h1><p class="muted">Plan the village route one day at a time.</p></div>
+          <button class="primary-button" id="calendarAdd">＋ New mission</button>
+        </header>
+        <div class="calendar-layout">
+          <section class="panel calendar-panel">
+            <div class="calendar-toolbar">
+              <button class="icon-button" id="prevMonth" aria-label="Previous month">‹</button>
+              <h2 id="calendarTitle"></h2>
+              <button class="icon-button" id="nextMonth" aria-label="Next month">›</button>
+            </div>
+            <div class="calendar-weekdays"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+            <div id="calendarGrid" class="calendar-grid"></div>
+          </section>
+          <aside class="panel day-detail">
+            <div><p class="eyebrow">SELECTED DAY</p><h2 id="selectedDateTitle">Today</h2></div>
+            <div id="selectedDayMissions" class="mission-list compact"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="strategyView">
+        <header class="page-header">
+          <div><p class="eyebrow">STUDY STRATEGY</p><h1>Build your training route</h1><p class="muted">A local rule-based planner — no live AI, no API, no account.</p></div>
+        </header>
+        <div class="strategy-layout">
+          <form class="panel strategy-form" id="strategyForm">
+            <div class="form-row"><label for="subjects">Subjects</label><textarea id="subjects" rows="5" placeholder="Biology\nChemistry\nPhysics"></textarea><small>One subject per line. Add a priority with <code>Biology | high</code>, if useful.</small></div>
+            <div class="form-grid">
+              <div class="form-row"><label for="studyHours">Available hours</label><input id="studyHours" type="number" min="0.5" max="12" step="0.5" value="3" /></div>
+              <div class="form-row"><label for="sessionLength">Focus block</label><select id="sessionLength"><option value="25">25 min</option><option value="40" selected>40 min</option><option value="50">50 min</option></select></div>
+            </div>
+            <div class="form-row"><label>Priority mode</label><div class="priority-options"><label><input type="radio" name="priorityMode" value="balanced" checked /> Balanced</label><label><input type="radio" name="priorityMode" value="high" /> High priority first</label></div></div>
+            <button class="primary-button" type="submit">Generate route</button>
+          </form>
+          <section class="panel strategy-result"><div class="panel-heading"><div><p class="eyebrow">YOUR ROUTE</p><h2>Today’s study schedule</h2></div><span class="offline-badge">RULE-BASED</span></div><div id="strategyOutput" class="schedule-list"><div class="empty-state">Enter your subjects and available time to generate a route.</div></div></section>
+        </div>
+      </section>
+
+      <section class="view" id="logicView">
+        <header class="page-header"><div><p class="eyebrow">LOGIC TRAINING</p><h1>Train the way you think</h1><p class="muted">Small habits that make difficult study sessions easier to navigate.</p></div></header>
+        <section class="panel checklist-panel"><div class="panel-heading"><div><p class="eyebrow">DAILY CHECKLIST</p><h2>Shinobi habits</h2></div><span class="check-progress" id="logicProgress">0 / 5</span></div><div id="logicChecklist" class="logic-list"></div></section>
+      </section>
+
+      <section class="view" id="senseiView">
+        <header class="page-header"><div><p class="eyebrow">AI SENSEI</p><h1>Your quiet study companion</h1><p class="muted">Offline demo using simple built-in response rules. It is not connected to a live AI model and should not be treated as an authoritative academic tutor.</p></div><button class="secondary-button" id="clearChat">Clear history</button></header>
+        <section class="panel chat-panel">
+          <div class="offline-notice"><span>●</span><strong>Offline demo</strong><span>Responses are generated locally from a small set of study-planning rules.</span></div>
+          <div id="chatMessages" class="chat-messages" aria-live="polite"></div>
+          <form id="chatForm" class="chat-input"><label class="sr-only" for="chatText">Message AI Sensei</label><input id="chatText" autocomplete="off" placeholder="Try: “How should I revise biology?”" /><button class="primary-button" type="submit">Send</button></form>
+        </section>
+      </section>
+
+      <section class="view" id="gameView">
+        <header class="page-header">
+          <div>
+            <p class="eyebrow">TIMEPASS TRAINING</p>
+            <h1>Shinobi Reflex</h1>
+            <p class="muted">Take a 30-second break. Hit the target, build your combo, and beat your high score.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="secondary-button" id="gameReset" type="button">Reset score</button>
+          </div>
+        </header>
+
+        <div class="game-wrap">
+          <div class="game-stats" aria-label="Game statistics">
+            <div class="game-stat"><span>Score</span><strong id="gameScore">0</strong></div>
+            <div class="game-stat"><span>Combo</span><strong id="gameCombo">0×</strong></div>
+            <div class="game-stat"><span>Lives</span><strong id="gameLives">♥ ♥ ♥</strong></div>
+            <div class="game-stat"><span>Time</span><strong id="gameTime">30</strong></div>
+            <div class="game-stat"><span>High score</span><strong id="gameHighScore">0</strong></div>
+          </div>
+
+          <div class="game-card">
+            <div class="game-topline">
+              <span id="gameMessage" aria-live="polite">Ready, shinobi?</span>
+              <span class="game-tip">Miss a target and lose a life.</span>
+            </div>
+            <div class="reflex-arena" id="reflexArena" tabindex="0" aria-label="Shinobi Reflex game arena">
+              <div class="arena-moon" aria-hidden="true"></div>
+              <div class="arena-mountain arena-mountain-a" aria-hidden="true"></div>
+              <div class="arena-mountain arena-mountain-b" aria-hidden="true"></div>
+              <div class="arena-ground" aria-hidden="true"></div>
+              <button class="reflex-target" id="reflexTarget" type="button" aria-label="Ninja target" hidden>✦</button>
+              <div class="game-start-panel" id="gameStartPanel">
+                <div class="game-kunai" aria-hidden="true">⚔</div>
+                <h2>30 seconds. One mission.</h2>
+                <p>Tap the glowing target as quickly as you can.</p>
+                <button class="primary-button" id="gameStart" type="button">Start mission</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="login-screen" id="loginScreen">
+    <div class="login-art" aria-hidden="true">
+      <div class="login-sun"></div><div class="login-mountain m1"></div><div class="login-mountain m2"></div>
+      <img src="assets/naruto-thumbs-up.jpg" alt="" class="login-character" />
+    </div>
+    <div class="login-card">
+      <div class="login-mark">忍</div>
+      <p class="eyebrow">SHINOBI STUDY VILLAGE</p>
+      <h1>Enter your village</h1>
+      <p class="muted">Create a local profile so Focus V4 can greet you by name.</p>
+      <form id="loginForm">
+        <div class="form-row"><label for="loginUsername">Username</label><input id="loginUsername" autocomplete="username" required maxlength="24" placeholder="e.g. Rudraksh" /></div>
+        <div class="form-row"><label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" required minlength="4" placeholder="At least 4 characters" /></div>
+        <button class="primary-button login-submit" type="submit">Enter village <span>→</span></button>
+      </form>
+      <div class="login-note"><strong>Local demo login</strong><span>No account or server is used. Your password is not saved; only your username/session is kept in this browser.</span></div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="taskModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header"><div><p class="eyebrow">NEW TASK</p><h2 id="modalTitle">Add a study task</h2></div><button class="icon-button" id="closeTaskModal" aria-label="Close">×</button></div>
+      <form id="taskForm">
+        <div class="form-row"><label for="taskTitle">Mission title</label><input id="taskTitle" required maxlength="90" placeholder="Revise electrostatics numericals" /></div>
+        <div class="form-grid"><div class="form-row"><label for="taskSubject">Subject</label><input id="taskSubject" maxlength="40" placeholder="Physics" /></div><div class="form-row"><label for="taskDate">Due date</label><input id="taskDate" type="date" required /></div></div>
+        <div class="modal-actions"><button class="secondary-button" type="button" id="cancelTask">Cancel</button><button class="primary-button" type="submit">Add task</button></div>
+      </form>
+    </div>
+  </div>
+
+
+  <div class="modal-backdrop" id="spotifyModal" hidden>
+    <div class="modal spotify-modal" role="dialog" aria-modal="true" aria-labelledby="spotifyTitle">
+      <div class="spotify-character-banner" aria-hidden="true">
+        <div class="spotify-character-copy"><span>FOCUS MODE</span><strong>Quiet mind. Deep focus.</strong></div>
+        <img src="assets/shikamaru.jpg" alt="" class="spotify-character-image" />
+      </div>
+      <div class="modal-header"><div><p class="eyebrow">STUDY AUDIO</p><h2 id="spotifyTitle">Spotify player</h2></div><button class="icon-button" id="closeSpotify" aria-label="Close Spotify player">×</button></div>
+      <p class="muted spotify-copy">Choose any Spotify song, playlist, album, show, or episode. Paste its Spotify link below and it will play inside Focus V4 without redirecting this page. Full-length music playback is controlled by Spotify and may require a Premium account.</p>
+      <form class="spotify-picker" id="spotifyForm">
+        <label for="spotifyUrl">Spotify link</label>
+        <div class="spotify-picker-row">
+          <input id="spotifyUrl" type="url" inputmode="url" placeholder="https://open.spotify.com/track/..." autocomplete="off" />
+          <button class="primary-button" type="submit">Load song</button>
+        </div>
+        <small>Tip: in Spotify, choose <strong>Share → Copy link</strong>, then paste it here.</small>
+      </form>
+      <div class="spotify-embed-wrap">
+        <iframe id="spotifyFrame" title="Spotify study player" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX8Uebhn9wzrS?utm_source=generator&amp;theme=0" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <small class="embed-note">Your selected Spotify embed link is saved only in this browser. Focus V4 does not log in to Spotify or access your Spotify account. If Spotify shows only a short preview, Focus V4 cannot unlock full playback; that restriction is controlled by Spotify.</small>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="timerModal" hidden>
+    <div class="modal timer-modal" role="dialog" aria-modal="true" aria-labelledby="timerTitle">
+      <div class="modal-header"><div><p class="eyebrow">FOCUS TIMER</p><h2 id="timerTitle">Study timer</h2></div><button class="icon-button" id="closeTimer" aria-label="Close study timer">×</button></div>
+      <div class="timer-display" id="timerDisplay" aria-live="polite">25:00</div>
+      <p class="timer-status" id="timerStatus">Ready for a focused study block.</p>
+      <div class="timer-presets" aria-label="Timer presets">
+        <button type="button" class="timer-preset active" data-minutes="25">25 min</button>
+        <button type="button" class="timer-preset" data-minutes="40">40 min</button>
+        <button type="button" class="timer-preset" data-minutes="50">50 min</button>
+        <label class="timer-custom">Custom <input id="customMinutes" type="number" min="1" max="180" value="25" /> min</label>
+      </div>
+      <div class="timer-controls">
+        <button class="secondary-button" id="resetTimer" type="button">Reset</button>
+        <button class="primary-button" id="startTimer" type="button">Start focus</button>
+      </div>
+      <div class="timer-tip"><strong>Shinobi rule:</strong> pick one task before starting, then keep the timer as your only target.</div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
